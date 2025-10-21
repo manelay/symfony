@@ -1,0 +1,43 @@
+{# templates/author/list.html.twig #}
+
+<h1>Liste des auteurs</h1>
+
+{# 4. Condition si tableau vide #}
+{% if authors is defined and authors|length > 0 %}
+
+    <p>5. Nombre d'auteurs : {{ authors|length }}</p>
+
+    {# 7. Total des livres #}
+    {% set totalBooks = 0 %}
+    {% for author in authors %}
+        {% set totalBooks = totalBooks + author.nb_books %}
+    {% endfor %}
+    <p>7. Total des livres : {{ totalBooks }}</p>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Photo</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Nb Livres</th>
+            <th>Détails</th>
+        </tr>
+
+        {# Affichage des auteurs #}
+        {% for author in authors %}
+        <tr>
+            <td><img src="{{ author.picture }}" width="100"></td>
+            <td>{{ author.username|upper }}</td>  {# 5. Majuscule #}
+            <td>{{ author.email }}</td>
+            <td>{{ author.nb_books }}</td>
+            <td>
+                {# 8. Lien details #}
+                <a href="{{ path('app_author_details', {'id': author.id}) }}">Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% else %}
+    <p>Aucun auteur trouvé.</p>
+{% endif %}

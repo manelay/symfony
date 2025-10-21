@@ -1,0 +1,13 @@
+{# templates/author/showAuthor.html.twig #}
+
+{% if author %}
+    <h1>Détails de l'auteur</h1>
+    <img src="{{ author.picture }}" width="150">
+    <p><strong>Nom :</strong> {{ author.username }}</p>
+    <p><strong>Email :</strong> {{ author.email }}</p>
+    <p><strong>Nombre de livres :</strong> {{ author.nb_books }}</p>
+
+    <a href="{{ path('app_authors_list') }}">← Retour à la liste</a>
+{% else %}
+    <p>Auteur introuvable.</p>
+{% endif %}
