@@ -43,6 +43,22 @@ class AuthorRepository extends ServiceEntityRepository
         ->getResult();
 }
 
+    public function findAuthorsByBookCount(int $min, int $max): array
+{
+    return $this->getEntityManager()
+        ->createQuery('SELECT a FROM App\Entity\Author a WHERE a.nbBooks BETWEEN :min AND :max')
+        ->setParameter('min', $min)
+        ->setParameter('max', $max)
+        ->getResult();
+}
+
+
+    public function deleteAuthorsWithNoBooks(): int
+{
+    return $this->getEntityManager()
+        ->createQuery('DELETE FROM App\Entity\Author a WHERE a.nbBooks = 0')
+        ->execute();
+}
 
     
     //    /**

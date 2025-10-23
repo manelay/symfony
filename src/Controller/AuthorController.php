@@ -179,6 +179,28 @@ class AuthorController extends AbstractController
             'authors' => $authors,
         ]);
     }
+    #[Route('/author/search-by-books', name: 'app_author_search_books')]
+public function searchAuthors(Request $request, AuthorRepository $repository): Response
+{
+    $min = (int) $request->query->get('min', 0);
+    $max = (int) $request->query->get('max', 100);
+    $authors = $repository->findAuthorsByBookCount($min, $max);
+
+    return $this->render('author/search_books.html.twig', [
+        'authors' => $authors,
+        'min' => $min,
+        'max' => $max
+    ]);
+}
+
+#[Route('/author/delete-empty', name: 'app_author_delete_empty')]
+public function deleteEmptyAuthors(AuthorRepository $repository): Response
+{
+    $count = $repository->deleteAuthorsWithNoBooks();
+    $this->addFlash('success', "$count authors deleted.");
+    return $this->redirectToRoute('app_Affiche');
+}
+
 
 
     }

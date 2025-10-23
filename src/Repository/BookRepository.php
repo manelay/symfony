@@ -40,6 +40,23 @@ class BookRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function countRomanceBooks(): int
+{
+    return (int) $this->getEntityManager()
+        ->createQuery('SELECT COUNT(b.ref) FROM App\Entity\Book b WHERE b.category = :cat')
+        ->setParameter('cat', 'Romance')
+        ->getSingleScalarResult();
+}
+
+    public function findBooksBetweenDates(\DateTime $start, \DateTime $end): array
+{
+    return $this->getEntityManager()
+        ->createQuery('SELECT b FROM App\Entity\Book b WHERE b.publicationDate BETWEEN :start AND :end')
+        ->setParameter('start', $start)
+        ->setParameter('end', $end)
+        ->getResult();
+}
 // Recherche par ref
     public function searchBookByRef(string $ref): ?Book
     {
@@ -73,16 +90,15 @@ class BookRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // Modifier catégorie Science-Fiction → Romance
-    public function updateCategoryScienceFictionToRomance(): int
-    {
-        return $this->createQueryBuilder('b')
-            ->update()
-            ->set('b.category', ':newCategory')
-            ->where('b.category = :oldCategory')
-            ->setParameter('newCategory', 'Romance')
-            ->setParameter('oldCategory', 'Science-Fiction')
-            ->getQuery()
-            ->execute();
-    }
+   public function updateCategoryScienceFictionToRomance(): int
+{
+    return $this->createQueryBuilder('b')
+        ->update()
+        ->set('b.category', ':newCategory')
+        ->where('b.category = :oldCategory')
+        ->setParameter('newCategory', 'Romance')
+        ->setParameter('oldCategory', 'Science Fiction')
+        ->getQuery()
+        ->execute();
+}
     }

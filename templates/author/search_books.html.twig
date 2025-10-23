@@ -1,0 +1,13 @@
+<form method="get">
+    <input type="number" name="min" value="{{ min }}">
+    <input type="number" name="max" value="{{ max }}">
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+{% for author in authors %}
+    <li>{{ author.username }} ({{ author.nbBooks }} books)</li>
+{% else %}
+    <li>No authors found.</li>
+{% endfor %}
+</ul>

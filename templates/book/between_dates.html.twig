@@ -1,0 +1,8 @@
+<h1>Books between {{ start|date('Y-m-d') }} and {{ end|date('Y-m-d') }}</h1>
+<ul>
+{% for book in books %}
+    <li>{{ book.title }} ({{ book.publicationDate|date('Y-m-d') }})</li>
+{% else %}
+    <li>No books found.</li>
+{% endfor %}
+</ul>

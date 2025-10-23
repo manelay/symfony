@@ -139,6 +139,28 @@ public function Affiche(BookRepository $bookRepository): Response
             'book' => $book,
         ]);
     }
+    #[Route('/book/count-romance', name: 'app_book_count_romance')]
+    public function countRomance(BookRepository $repository): Response
+    {
+        $count = $repository->countRomanceBooks();
+        return $this->render('book/count_romance.html.twig', ['count' => $count]);
+    
+    }
+
+
+    #[Route('/book/between-dates', name: 'app_book_between_dates')]
+    public function booksBetweenDates(Request $request, BookRepository $repository): Response
+    {
+        $start = new \DateTime($request->query->get('start', '2014-01-01'));
+        $end = new \DateTime($request->query->get('end', '2018-12-31'));
+        $books = $repository->findBooksBetweenDates($start, $end);
+
+        return $this->render('book/between_dates.html.twig', [
+            'books' => $books,
+            'start' => $start,
+            'end' => $end
+        ]);
+    }
 
    #[Route('/book/search', name: 'app_book_search', methods: ['GET'])]
     public function searchBook(Request $request, BookRepository $repository): Response
@@ -173,6 +195,5 @@ public function Affiche(BookRepository $bookRepository): Response
         $this->addFlash('success', "$count books updated.");
         return $this->redirectToRoute('app_book_list');
     }
-
 
     }
