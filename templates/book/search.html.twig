@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+{% block title %}Search Book{% endblock %}
+{% block body %}
+<h1>Search Book by Ref</h1>
+<formth(
+    <input type="text" name="ref" placeholder="Enter book ref" value="{{ ref is defined ? ref : '' }}">
+    <button type="submit">Search</button>
+</form>
+<hr>
+{% if book %}
+    <p><strong>Title:</strong> {{ book.title }} | <strong>Author:</strong> {{ book.author.username }}</p>
+{% elseif ref is defined and ref %}
+    <p>No book found for ref "{{ ref }}"</p>
+{% endif %}
+{% endblock %}

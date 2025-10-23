@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<h1>Books before 2023 (Authors >10 books)</h1>
+<ul>
+{% for book in books %}
+    <li>{{ book.title }} ({{ book.publicationDate|date('Y-m-d') }}) - {{ book.author.username }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

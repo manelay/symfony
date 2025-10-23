@@ -40,4 +40,49 @@ class BookRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}
+// Recherche par ref
+    public function searchBookByRef(string $ref): ?Book
+    {
+        return $this->createQueryBuilder('b')
+            ->where('b.ref = :ref')
+            ->setParameter('ref', $ref)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    // Liste des livres triés par auteur
+    public function booksListByAuthors(): array
+    {
+        return $this->createQueryBuilder('b')
+            ->join('b.author', 'a')
+            ->orderBy('a.username', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Livres publiés avant 2023 dont l’auteur a >10 livres
+    public function booksBefore2023WithAuthorsHavingMoreThan10Books(): array
+    {
+        return $this->createQueryBuilder('b')
+            ->join('b.author', 'a')
+            ->where('b.publicationDate < :date')
+            ->andWhere('a.nb_books > :count')
+            ->setParameter('date', new \DateTime('2023-01-01'))
+            ->setParameter('count', 10)
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Modifier catégorie Science-Fiction → Romance
+    public function updateCategoryScienceFictionToRomance(): int
+    {
+        return $this->createQueryBuilder('b')
+            ->update()
+            ->set('b.category', ':newCategory')
+            ->where('b.category = :oldCategory')
+            ->setParameter('newCategory', 'Romance')
+            ->setParameter('oldCategory', 'Science-Fiction')
+            ->getQuery()
+            ->execute();
+    }
+    }

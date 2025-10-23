@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<h1>Books by Authors</h1>
+<ul>
+{% for book in books %}
+    <li>{{ book.author.username }} - {{ book.title }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

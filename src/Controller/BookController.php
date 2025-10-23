@@ -140,6 +140,39 @@ public function Affiche(BookRepository $bookRepository): Response
         ]);
     }
 
+   #[Route('/book/search', name: 'app_book_search', methods: ['GET'])]
+    public function searchBook(Request $request, BookRepository $repository): Response
+    {
+        $ref = $request->query->get('ref');
+        $book = $ref ? $repository->searchBookByRef($ref) : null;
+
+        return $this->render('book/search.html.twig', [
+            'book' => $book,
+            'ref' => $ref
+        ]);
+    }
+
+    #[Route('/book/by-authors', name: 'app_books_by_authors')]
+    public function booksByAuthors(BookRepository $repository): Response
+    {
+        $books = $repository->booksListByAuthors();
+        return $this->render('book/by_authors.html.twig', ['books' => $books]);
+    }
+
+    #[Route('/book/before-2023', name: 'app_books_before_2023')]
+    public function booksBefore2023(BookRepository $repository): Response
+    {
+        $books = $repository->booksBefore2023WithAuthorsHavingMoreThan10Books();
+        return $this->render('book/before_2023.html.twig', ['books' => $books]);
+    }
+
+    #[Route('/book/update-category', name: 'app_books_update_category')]
+    public function updateCategory(BookRepository $repository): Response
+    {
+        $count = $repository->updateCategoryScienceFictionToRomance();
+        $this->addFlash('success', "$count books updated.");
+        return $this->redirectToRoute('app_book_list');
+    }
 
 
-}
+    }
