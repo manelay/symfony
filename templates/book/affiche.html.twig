@@ -1,0 +1,56 @@
+{# templates/book/affiche.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}BOOK LIST{% endblock %}
+
+{% block body %}
+<h1>BOOK LIST</h1>
+
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+
+    <table>
+        <thead>
+            <tr>
+                <th>title</th>
+                <th>category</th>
+                <th>publication date</th>
+                <th>published</th>
+                <th>author</th>
+                <th>edit</th>
+                <th>supprimer</th>
+                <th>details</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in publishedBooks %}
+                <tr>
+                    <td>{{ b.title }}</td>
+                    <td>{{ b.category }}</td>
+                    <td>{{ b.publicationDate|date('d/m/Y') }}</td>
+                    <td>{{ b.published }}</td>
+                    <td>{{ b.author.username }}</td>
+                    <td><a href={{ path('app_book_edit', {'ref' : b.ref})}}">edit</td>
+                    <td><a href={{ path('app_book_delete', {'ref' : b.ref})}}">delete</td>
+                    <td><a href={{ path('app_book_details', {'ref' : b.ref})}}">details</td>
+
+                </tr>
+            {% endfor %}
+
+            <p>Number of published books : {{numPublishedBooks}}</p>
+             <p>Number of unpublished books : {{numUnPublishedBooks}}</p>
+       </tbody>
+    </table>
+
+{% endblock %}
